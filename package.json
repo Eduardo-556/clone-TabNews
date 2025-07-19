@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
+    "postdev": "npm run services:down",
     "test": "npm run services:up  && concurrently -n next,jest  --hide next -k -s command-jest \"next dev\" \"NODE_OPTIONS='--experimental-vm-modules' jest --runInBand --verbose\"",
     "posttest": "npm run services:stop",
     "test:watch": "NODE_OPTIONS='--experimental-vm-modules' jest --watchAll --runInBand --verbose --silent=false",
@@ -34,7 +35,8 @@
     "pg": "8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "swr": "^2.3.4"
+    "swr": "^2.3.4",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "19.8.1",
