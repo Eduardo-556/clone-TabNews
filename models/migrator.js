@@ -1,23 +1,25 @@
 import { resolve } from "node:path";
 import { runner as migrationRunner } from "node-pg-migrate";
 
-const defaultMigrationOptions = {
-  databaseUrl: process.env.DATABASE_URL,
-  dryRun: true,
-  dir: resolve("infra", "migrations"),
-  direction: "up",
-  log: true,
-  table: "pgmigrations",
-};
+function getDefaultMigrationOptions() {
+  return {
+    databaseUrl: process.env.DATABASE_URL,
+    dryRun: true,
+    dir: resolve("infra", "migrations"),
+    direction: "up",
+    log: () => {},
+    table: "pgmigrations",
+  };
+}
 
 async function listPendingMigrations() {
-  const pendingMigrations = await migrationRunner(defaultMigrationOptions);
+  const pendingMigrations = await migrationRunner(getDefaultMigrationOptions());
   return pendingMigrations;
 }
 
 async function runPendingMigrations() {
   const migratedMigrations = await migrationRunner({
-    ...defaultMigrationOptions,
+    ...getDefaultMigrationOptions(),
     dryRun: false,
   });
   return migratedMigrations;

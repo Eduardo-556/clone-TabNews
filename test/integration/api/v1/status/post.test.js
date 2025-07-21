@@ -1,4 +1,4 @@
-const { default: orchestrator } = require("test/orchestrator");
+import orchestrator from "test/orchestrator";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
