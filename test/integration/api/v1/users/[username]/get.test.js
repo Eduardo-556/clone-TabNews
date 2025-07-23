@@ -22,7 +22,7 @@ describe("GET /api/v1/users/[username]", () => {
       expect(response1.status).toBe(201);
 
       const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/mesmoCase"
+        "http://localhost:3000/api/v1/users/mesmoCase",
       );
       expect(response2.status).toBe(200);
 
@@ -53,7 +53,7 @@ describe("GET /api/v1/users/[username]", () => {
       expect(response1.status).toBe(201);
 
       const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/casediferente"
+        "http://localhost:3000/api/v1/users/casediferente",
       );
       expect(response2.status).toBe(200);
 
@@ -73,7 +73,7 @@ describe("GET /api/v1/users/[username]", () => {
 
     test("With nonexistent username", async () => {
       const response = await fetch(
-        "http://localhost:3000/api/v1/users/nonexistent"
+        "http://localhost:3000/api/v1/users/nonexistent",
       );
       expect(response.status).toBe(404);
 
