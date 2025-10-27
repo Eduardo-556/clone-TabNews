@@ -5,7 +5,8 @@ import session from "models/session";
 
 const router = createRouter();
 
-router.post(postHandler);
+router.use(controller.injectAnonymousOrUser);
+router.post(controller.canRequest("create:session"), postHandler);
 router.delete(deleteHandler);
 
 export default router.handler(controller.errorHandlers);
@@ -14,7 +15,7 @@ async function postHandler(request, response) {
   const userInputValues = request.body;
   const authenticatedUser = await authentication.getAuthenticatedUser(
     userInputValues.email,
-    userInputValues.password,
+    userInputValues.password
   );
   const newSession = await session.create(authenticatedUser.id);
   controller.setSessionCookie(newSession.token, response);
