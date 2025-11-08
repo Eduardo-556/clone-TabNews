@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import retry from "async-retry";
 import database from "infra/database";
+import activation from "models/activation";
 import migrator from "models/migrator";
 import session from "models/session";
 import user from "models/user";
@@ -85,6 +86,10 @@ function extractUUID(text) {
   return match ? match[0] : null;
 }
 
+async function activateUser(inactiveUser) {
+  return await activation.activatedUserByUserId(inactiveUser.id);
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
@@ -94,6 +99,7 @@ const orchestrator = {
   deleteAllEmails,
   getLastEmail,
   extractUUID,
+  activateUser,
 };
 
 export default orchestrator;
