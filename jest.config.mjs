@@ -10,7 +10,10 @@ const jestConfig = createJestConfig({
   testTimeout: 60000,
   transformIgnorePatterns: ["/node_modules/(?!(node-pg-migrate)/)"],
   testEnvironment: "node",
-  transform: {},
+  globals: {
+    jest: true,
+  },
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 });
 
 export default jestConfig;
