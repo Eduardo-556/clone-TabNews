@@ -38,7 +38,7 @@ describe("PATCH /api/v1/users/[username]", () => {
     });
   });
   describe("Default user", () => {
-    test.only("With nonexistent 'username'", async () => {
+    test("With nonexistent 'username'", async () => {
       const createdUser = await orchestrator.createUser();
       const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(activatedUser.id);
@@ -62,7 +62,7 @@ describe("PATCH /api/v1/users/[username]", () => {
         statusCode: 404,
       });
     });
-    test.only("With duplicated 'username'", async () => {
+    test("With duplicated 'username'", async () => {
       await orchestrator.createUser({
         username: "user1",
       });
@@ -101,7 +101,48 @@ describe("PATCH /api/v1/users/[username]", () => {
         statusCode: 400,
       });
     });
-    test.only("With duplicated 'email'", async () => {
+
+    test("With `userB` targeting `userA`", async () => {
+      await orchestrator.createUser({
+        username: "userA",
+      });
+
+      const createdUserB = await orchestrator.createUser({
+        username: "userB",
+      });
+
+      const activatedUserB = await orchestrator.activateUser(createdUserB);
+      const sessionObjectB = await orchestrator.createSession(
+        activatedUserB.id
+      );
+
+      const userBUpdate = await fetch(
+        "http://localhost:3000/api/v1/users/userA",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: `session_id=${sessionObjectB.token}`,
+          },
+          body: JSON.stringify({
+            username: "userC",
+          }),
+        }
+      );
+
+      expect(userBUpdate.status).toBe(403);
+
+      const response = await userBUpdate.json();
+
+      expect(response).toEqual({
+        action:
+          "Verifique se você possui a feature necessária para atualizar outro usuário.",
+        message: "Você não possui permissão para atualizar outro usuário.",
+        name: "ForbiddenError",
+        statusCode: 403,
+      });
+    });
+    test("With duplicated 'email'", async () => {
       await orchestrator.createUser({
         email: "email1@email.com",
       });
@@ -140,7 +181,7 @@ describe("PATCH /api/v1/users/[username]", () => {
         statusCode: 400,
       });
     });
-    test.only("With unique 'username'", async () => {
+    test("With unique 'username'", async () => {
       const createdUser = await orchestrator.createUser();
 
       const activatedUser = await orchestrator.activateUser(createdUser);
@@ -178,7 +219,7 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
-    test.only("With unique 'email'", async () => {
+    test("With unique 'email'", async () => {
       const uniqueEmail = await orchestrator.createUser({
         email: "uniqueemail1@email.com",
       });
@@ -218,7 +259,7 @@ describe("PATCH /api/v1/users/[username]", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
-    test.only("With new 'password'", async () => {
+    test("With new 'password'", async () => {
       const uniquePassword = await orchestrator.createUser({
         password: "newPassword1",
       });
