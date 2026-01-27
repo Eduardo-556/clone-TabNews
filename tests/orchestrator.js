@@ -74,7 +74,7 @@ async function getLastEmail() {
   const lastEmailItem = emailListBody.pop();
   if (!lastEmailItem) return null;
   const emailTextResponse = await fetch(
-    `${emailHttpUrl}/messages/${lastEmailItem.id}.plain`
+    `${emailHttpUrl}/messages/${lastEmailItem.id}.plain`,
   );
   const emailTextBody = await emailTextResponse.text();
   lastEmailItem.text = emailTextBody;
@@ -90,6 +90,11 @@ async function activateUser(inactiveUser) {
   return await activation.activatedUserByUserId(inactiveUser.id);
 }
 
+async function addFeaturesToUser(userObject, features) {
+  const updatedUser = await user.addFeatures(userObject.id, features);
+  return updatedUser;
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
@@ -100,6 +105,7 @@ const orchestrator = {
   getLastEmail,
   extractUUID,
   activateUser,
+  addFeaturesToUser,
 };
 
 export default orchestrator;
