@@ -15,7 +15,7 @@ describe("GET /api/v1/users/[username]", () => {
       });
 
       const response2 = await fetch(
-        `http://localhost:3000/api/v1/users/${response1.username}`
+        `http://localhost:3000/api/v1/users/${response1.username}`,
       );
       expect(response2.status).toBe(200);
 
@@ -23,9 +23,7 @@ describe("GET /api/v1/users/[username]", () => {
       expect(response2Body).toEqual({
         id: response2Body.id,
         username: "mesmoCase",
-        email: response2Body.email,
         features: ["read:activation_token"],
-        password: response2Body.password,
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
       });
@@ -40,7 +38,7 @@ describe("GET /api/v1/users/[username]", () => {
       });
 
       const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/casediferente"
+        "http://localhost:3000/api/v1/users/casediferente",
       );
       expect(response2.status).toBe(200);
 
@@ -61,7 +59,7 @@ describe("GET /api/v1/users/[username]", () => {
 
     test("With nonexistent username", async () => {
       const response = await fetch(
-        "http://localhost:3000/api/v1/users/nonexistent"
+        "http://localhost:3000/api/v1/users/nonexistent",
       );
       expect(response.status).toBe(404);
 
