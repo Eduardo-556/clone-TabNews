@@ -1,4 +1,32 @@
+import { InternalServerError } from "infra/errors.js";
+
+const availableFeatures = [
+  // USER
+  "create:user",
+  "read:user",
+  "read:user:self",
+  "update:user",
+  "update:user:others",
+
+  // SESSION
+  "create:session",
+  "read:session",
+
+  // ACTIVATION_TOKEN
+  "read:activation_token",
+
+  // MIGRATION
+  "create:migration",
+  "read:migration",
+
+  // STATUS
+  "read:status",
+  "read:status:all",
+];
+
 function can(user, feature, resource) {
+  validateUser(user);
+  validateFeature(feature);
   let authorized = false;
 
   if (user.features.includes(feature)) {
@@ -17,6 +45,10 @@ function can(user, feature, resource) {
 }
 
 function filterOutput(user, feature, output) {
+  validateUser(user);
+  validateFeature(feature);
+  validateResource(output);
+
   if (feature === "read:user") {
     return {
       id: output.id,
@@ -79,8 +111,8 @@ function filterOutput(user, feature, output) {
       updated_at: output.updated_at,
       dependencies: {
         database: {
-          max_connections: output.max_connections,
-          opened_connections: output.opened_connections,
+          max_connections: output.dependencies.database.max_connections,
+          opened_connections: output.dependencies.database.opened_connections,
         },
       },
     };
@@ -90,6 +122,32 @@ function filterOutput(user, feature, output) {
         output.dependencies.database.version;
     }
     return outputStatus;
+  }
+}
+
+function validateUser(user) {
+  if (!user || !user.features) {
+    throw new InternalServerError({
+      cause: "É necessário fornecer `user` no model `authorization`.",
+    });
+  }
+}
+
+function validateFeature(feature) {
+  if (!feature || !availableFeatures.includes(feature)) {
+    throw new InternalServerError({
+      cause:
+        "É necessário fornecer uma `feature` conhecida no model `authorization`.",
+    });
+  }
+}
+
+function validateResource(resource) {
+  if (!resource) {
+    throw new InternalServerError({
+      cause:
+        "É necessário fornecer um `resource` em `authorization.filterOutput()`.",
+    });
   }
 }
 

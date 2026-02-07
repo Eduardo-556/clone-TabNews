@@ -14,6 +14,18 @@ const jestConfig = createJestConfig({
     jest: true,
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  coverageDirectory: "coverage",
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "./**/*.js",
+    "!./node_modules/**",
+    "!./.next/**",
+    "!./coverage/**",
+    "!./jest.config.mjs",
+    "!./jest.setup.js",
+    "!./next.config.mjs",
+    "!./prettier.config.js",
+  ],
 });
 
 export default jestConfig;
