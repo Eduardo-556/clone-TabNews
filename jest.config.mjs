@@ -10,7 +10,22 @@ const jestConfig = createJestConfig({
   testTimeout: 60000,
   transformIgnorePatterns: ["/node_modules/(?!(node-pg-migrate)/)"],
   testEnvironment: "node",
-  transform: {},
+  globals: {
+    jest: true,
+  },
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  coverageDirectory: "coverage",
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "./**/*.js",
+    "!./node_modules/**",
+    "!./.next/**",
+    "!./coverage/**",
+    "!./jest.config.mjs",
+    "!./jest.setup.js",
+    "!./next.config.mjs",
+    "!./prettier.config.js",
+  ],
 });
 
 export default jestConfig;
