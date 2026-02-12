@@ -37,10 +37,10 @@ describe("DELETE /api/v1/sessions", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       expect(
-        responseBody.expires_at < sessionObject.expires_at.toISOString()
+        responseBody.expires_at < sessionObject.expires_at.toISOString(),
       ).toBe(true);
       expect(
-        responseBody.updated_at > sessionObject.updated_at.toISOString()
+        responseBody.updated_at > sessionObject.updated_at.toISOString(),
       ).toBe(true);
 
       // Set-Cookie
@@ -63,7 +63,7 @@ describe("DELETE /api/v1/sessions", () => {
           headers: {
             Cookie: `session_id=${sessionObject.token}`,
           },
-        }
+        },
       );
 
       expect(doubleCheckResponse.status).toBe(401);

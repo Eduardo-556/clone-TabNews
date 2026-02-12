@@ -15,7 +15,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
     test("With nonexistent  token", async () => {
       const response = await fetch(
         "http://localhost:3000/api/v1/activations/45e5fc3f-f88a-4c26-8005-09efda3dc3b9",
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
 
       expect(response.status).toBe(404);
@@ -41,7 +41,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
 
       const response = await fetch(
         `http://localhost:3000/api/v1/activations/${expiredActivationToken.id}`,
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
 
       expect(response.status).toBe(404);
@@ -63,14 +63,14 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
 
       const response = await fetch(
         `http://localhost:3000/api/v1/activations/${activationToken.id}`,
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
 
       expect(response.status).toBe(200);
 
       const response2 = await fetch(
         `http://localhost:3000/api/v1/activations/${activationToken.id}`,
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
 
       expect(response2.status).toBe(404);
@@ -92,7 +92,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
 
       const response = await fetch(
         `http://localhost:3000/api/v1/activations/${activationToken.id}`,
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
 
       expect(response.status).toBe(200);
@@ -139,7 +139,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
 
       const response = await fetch(
         `http://localhost:3000/api/v1/activations/${activationToken.id}`,
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
 
       expect(response.status).toBe(403);
@@ -171,7 +171,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
           headers: {
             Cookie: `session_id=${user1SessionObject.token}`,
           },
-        }
+        },
       );
       expect(response.status).toBe(403);
 

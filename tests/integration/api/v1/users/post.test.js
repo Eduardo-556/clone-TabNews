@@ -40,11 +40,11 @@ describe("POST /api/v1/users", () => {
       const userInDatabase = await user.findOneByUsername("Eduardo");
       const correctPasswordMatch = await password.compare(
         "password123",
-        userInDatabase.password
+        userInDatabase.password,
       );
       const incorrectPasswordMatch = await password.compare(
         "SenhaErrada",
-        userInDatabase.password
+        userInDatabase.password,
       );
       expect(correctPasswordMatch).toEqual(true);
       expect(incorrectPasswordMatch).toEqual(false);

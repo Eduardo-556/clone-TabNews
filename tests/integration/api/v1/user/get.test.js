@@ -27,7 +27,7 @@ describe("GET /api/v1/user", () => {
 
       const cacheControl = response.headers.get("Cache-Control");
       expect(cacheControl).toBe(
-        "no-store, no-cache, max-age=0, must-revalidate"
+        "no-store, no-cache, max-age=0, must-revalidate",
       );
 
       const responseBody = await response.json();
@@ -45,14 +45,14 @@ describe("GET /api/v1/user", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       const renewedSessionObject = await session.findOneValidByToken(
-        sessionObject.token
+        sessionObject.token,
       );
 
       expect(
-        renewedSessionObject.expires_at > sessionObject.expires_at
+        renewedSessionObject.expires_at > sessionObject.expires_at,
       ).toEqual(true);
       expect(
-        renewedSessionObject.updated_at > sessionObject.updated_at
+        renewedSessionObject.updated_at > sessionObject.updated_at,
       ).toEqual(true);
 
       // Set-Cookie

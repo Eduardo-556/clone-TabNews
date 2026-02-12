@@ -27,7 +27,7 @@ describe("Use case: Registration Flow (all sucessful)", () => {
           email: "registration.flow@email.com",
           password: "registrationPassword",
         }),
-      }
+      },
     );
     expect(createUserResponse.status).toBe(201);
 
@@ -55,7 +55,7 @@ describe("Use case: Registration Flow (all sucessful)", () => {
     activationTokenId = orchestrator.extractUUID(lastEmail.text);
 
     expect(lastEmail.text).toContain(
-      `${webserver.origin}/cadastro/ativar/${activationTokenId}`
+      `${webserver.origin}/cadastro/ativar/${activationTokenId}`,
     );
 
     const activationTokenObject =
@@ -69,7 +69,7 @@ describe("Use case: Registration Flow (all sucessful)", () => {
       `http://localhost:3000/api/v1/activations/${activationTokenId}`,
       {
         method: "PATCH",
-      }
+      },
     );
 
     expect(activationResponse.status).toBe(200);
@@ -98,7 +98,7 @@ describe("Use case: Registration Flow (all sucessful)", () => {
           email: "registration.flow@email.com",
           password: "registrationPassword",
         }),
-      }
+      },
     );
 
     expect(createSessionsResponse.status).toBe(201);
